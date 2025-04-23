@@ -1,0 +1,146 @@
+<%- include('partials/header') %>
+
+<div class="main-content">
+
+  <div class="main">
+    <div class="main-disc">
+      <h1><b>Welcome to Docflex</b></h1>
+      <br>
+      <p>Work with PDFs wherever you are.</p>
+    </div>
+    <div class="main-img"><img src="laptop.png" alt="logo"></div>
+  </div>
+
+ <!-- Responsive Cards Section -->
+<div class="containerr text-center">
+  <h2><b>Try These Tools</b></h2>
+  <p>Work smarter from anywhere with Docflex online PDF tools.</p>
+
+  <div class="row justify-content-center"> 
+      <!-- Card 1: Word to PDF -->
+      <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+          <a href="/wordToPdf" class="text-decoration-none">
+              <div class="card h-100">
+                  <div class="card-body">
+                      <h5 class="card-title text-dark">Convert Word to PDF</h5>
+                      <div class="d-flex justify-content-center gap-2">
+                          <img src="/svg/word.svg" alt="MS Word" width="50">
+                          <img src="/svg/pdf.svg" alt="PDF" width="50">
+                      </div>
+                      <p class="text-muted">Make DOC and DOCX files easy to read by converting them to PDF.</p>
+                  </div>
+              </div>
+          </a>
+      </div>
+
+      <!-- Card 2: PPT to PDF -->
+      <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+          <a href="/pptToPdf" class="text-decoration-none">
+              <div class="card h-100">
+                  <div class="card-body">
+                      <h5 class="card-title text-dark">Convert PPT to PDF</h5>
+                      <div class="d-flex justify-content-center gap-2">
+                          <img src="/svg/ppt.svg" alt="PPT" width="50">
+                          <img src="/svg/pdf.svg" alt="PDF" width="50">
+                      </div>
+                      <p class="text-muted">Convert PPT and PPTX slideshows to PDF for easier viewing.</p>
+                  </div>
+              </div>
+          </a>
+      </div>
+
+      <!-- Card 3: Excel to PDF -->
+      <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+          <a href="/csvToPdf" class="text-decoration-none">
+              <div class="card h-100">
+                  <div class="card-body">
+                      <h5 class="card-title text-dark">Excel to PDF</h5>
+                      <div class="d-flex justify-content-center gap-2">
+                          <img src="/svg/excel.svg" alt="Excel" width="50">
+                          <img src="/svg/pdf.svg" alt="PDF" width="50">
+                      </div>
+                      <p class="text-muted">Make EXCEL spreadsheets easy to read by converting them to PDF.</p>
+                  </div>
+              </div>
+          </a>
+      </div>
+
+      <!-- Card 4: PDF to Word -->
+      <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+          <a href="/pdfToWord" class="text-decoration-none">
+              <div class="card h-100">
+                  <div class="card-body">
+                      <h5 class="card-title text-dark">Convert PDF to Word</h5>
+                      <div class="d-flex justify-content-center gap-2">
+                          <img src="/svg/pdf.svg" alt="PDF" width="50">
+                          <img src="/svg/word.svg" alt="Word" width="50">
+                      </div>
+                      <p class="text-muted">Easily convert PDFs into editable DOC and DOCX files.</p>
+                  </div>
+              </div>
+          </a>
+      </div>
+
+      <!-- Card 5: Image Compressor -->
+      <div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+          <a href="/compressimg" class="text-decoration-none">
+              <div class="card h-100">
+                  <div class="card-body">
+                      <h5 class="card-title text-dark">Image Compressor</h5>
+                      <div class="d-flex justify-content-center">
+                          <img src="/svg/imgcompress.svg" alt="Compress" width="50">
+                      </div>
+                      <p class="text-muted">Reduce image size while maintaining quality.</p>
+                  </div>
+              </div>
+          </a>
+      </div>
+  </div>
+</div>
+
+
+  <div class=" bottom-text2">
+    <b>
+      <p>8M* files uploaded!</p>
+      <p>Join millions of users who have successfully converted PDFs using Acrobat.</p>
+    </b>
+  </div>
+
+  
+
+   
+    <div class="feedback-main">
+      <a href="/feedback"><b>Feedback</b></a>
+  
+      <div class="row roow justify-content-spaceevenly">
+          <% for (let i=0; i < feedbacks.length; i++) { %>
+              <div class="col-lg-3 col-md-4 col-sm-6">  <!-- Responsive column for cards -->
+                  <form method="POST" action="feedback/delete/<%=feedbacks[i]._id%>?_method=DELETE">
+                      <div class="card " style="width: 100%;"> 
+                          <div class="card-body">
+                              <h5 class="card-title">Feedback</h5>
+                              <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                              <p class="card-text">
+                                  <strong>Name:</strong> <%= feedbacks[i].user.name %> <br>
+                                  <strong>Message:</strong> <%= feedbacks[i].message %> <br>
+                                  <strong>Date:</strong> <%= feedbacks[i].createdAt.toDateString() %>
+                              </p>
+  
+                              <% if(user == feedbacks[i].user._id.toString()) { %>
+                                  <button class="btn btn-danger">Delete</button>
+                              <% } %>
+                          </div>
+                      </div>
+                  </form>
+              </div> <!-- End of col -->
+          <% } %>
+      </div> <!-- End of row -->
+  </div> <!-- End of feedback-main -->
+
+
+</div>
+  
+  <%- include('partials/footer') %>
+  
+   
+ 

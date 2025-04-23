@@ -1,0 +1,77 @@
+<%- include('partials/header') %>
+
+
+  <div class="content">
+    <div class="upload-section">
+      <div class="text-center mt-5 ">
+        <p> Docflex</p>
+        <h1><b> Convert PDF to Word </b></h1>
+      </div>
+      <div class="text">
+        <div class="text-center my-5">Drag and drop a PDF,Convert a PDF,Microsoft Word,Excel,PowerPoint,or image file.</div>
+        <div class="d-flex justify-content-center">
+          <form action="/pdfToWord" method="POST" enctype="multipart/form-data" class="form-control upload">
+            <input id="uploadb" type="file" name= "document" accept=".pdf" >
+            <button type="submit" class=" btn btn-outline-primary">Select a file</button> 
+        </form>
+
+    
+       
+      </div>
+    </div>
+    
+  
+    <div class=" bottom-text">
+      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.<br>
+        By using this service, you agree to the Adobe Terms of Use and Privacy Policy.</span>
+    </div>
+ 
+  </div>
+  
+  
+  
+  
+  </div>
+  
+  <div class=" belowtext"><b>8M* files uploaded!<br>
+    Join millions of users who have successfully converted PDFs using Docflex.
+  </b></div>
+
+  <div class="instruction">
+    <div class="instruction-text">
+      <h2>How to convert PDF to Word</h2>
+      <p>Follow these easy steps to convert your PDF files into Microsoft Word (DOCX):</p>
+      <hr class="hr-tag">
+      <p> <b>1.</b> Click the "Select a file" button above, or drag and drop a file into the drop zone.</p>
+      <hr class="hr-tag">
+      <p><b>2.</b> Select the PDF you want to convert to the DOCX file format.</p>
+      <hr class="hr-tag">
+      <p><b>3.</b> Watch Docflex automatically convert the file from PDF to an editable Word document.</p>
+      <hr class="hr-tag">
+      <p> <b>4.</b> Download your file. If you use the tool again, you may be asked to sign in to download it.</p>
+      <hr class="hr-tag">
+    </div>
+    <div class="instruction-img"></div>
+  </div>
+  
+  <div class="last">
+    <div class="last-heading">
+      <h1>Try our free PDF to Word converter</h1>
+    </div>
+    <div class="last-box">
+      <div class="last-text1">
+        <p><b>Turn PDFs into editable Word files</b><br>
+          Learning how to convert PDF to Word is quick and easy. Simply drag and drop your PDF, then download the converted Word file.</p>
+      </div>
+      <div class="last-text2">
+        <P><b>Convert PDF to DOCX fast</b><br>
+          Docflex turns PDF files into the DOCX file format in seconds. When you convert PDF to DOCX with our conversion tool, your formatting will look as expected.</P>
+      </div>
+      <div class="last-text3">
+        <p><b>Edit your Word file for free</b><br>
+          After you use our PDF to Word converter tool, you can edit the converted file in Microsoft Word for the web right from Docflex. All you have to do is sign in.</p>
+      </div>
+    </div>
+  </div>
+  
+  <%- include('partials/footer') %>

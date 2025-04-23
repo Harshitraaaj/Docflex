@@ -1,0 +1,198 @@
+
+
+/*Red-box*/
+.content {
+    background-color: #fc6767;
+    width: 100%;
+    /* Adjust this to cover more than half the page */
+    height: 600px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.upload-section {
+
+    width: 90%;
+    height: 100%;
+    background-color: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    border: 0.5px solid grey;
+    border-radius: 10px;
+    margin-top: 65px;
+    z-index: 2;
+
+}
+
+.text-center {
+    font-size: 1.2rem;
+    position: relative;
+    margin-top: 7%;
+
+}
+
+.text-center h1 {
+    line-height: 0.2;
+}
+
+
+.text {
+    width: 93%;
+    height: 65%;
+    /* Let content decide height */
+    background-color: white;
+    border: 2px dashed grey;
+    border-radius: 10px;
+    padding: 2rem;
+    margin: auto;
+    /* Centering */
+    margin-top: 20px;
+    /* Space below */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+
+}
+
+.text:hover {
+    border-color: black;
+}
+
+.custom-hover:hover {
+    color: red !important;
+    /* Text color */
+}
+
+
+.pdf {
+    position: absolute;
+    padding: 2rem;
+}
+
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 140px;
+
+}
+
+.word-icon .excel-icon {
+    width: 60px;
+    height: 60px;
+    margin: 30px;
+
+}
+
+.pdf-icon {
+    width: 70px;
+    height: 70px;
+    opacity: 1;
+    /* Start visible */
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+
+
+.icons img {
+
+    width: 5vw;
+    height:8vh;
+}
+
+
+
+
+
+.belowtext {
+
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    margin-top: 8%;
+    font-size: 1rem;
+
+}
+
+.bottom-text {
+    margin: auto;
+    padding: 2%;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.instruction{
+    position: relative;
+    display: flex;
+    align-items: start;
+    margin-top: 2.5%;
+}
+.instruction-text{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    margin-left: 5%;
+}
+.instruction h2{
+    font-size: 2.3rem;
+    margin-top: 5%;
+    margin-bottom: 2%;
+}
+.instruction p{
+    margin-top: 2.5%;
+    margin-bottom: 2.5%;
+}
+.hr-tag{
+    border: 1px solid black;
+    width:50vw;
+}
+.last{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-bottom: 5%;
+}
+
+.last-box{
+    position: relative;
+    display: flex;
+    gap: 2%;
+    justify-content: center;
+    margin-top: 2.5%;
+    margin-bottom: 2%;
+    flex-wrap: wrap;
+    width:100%;
+}
+
+.last-text1,.last-text2,.last-text3{
+   
+    padding: 2%;
+    flex-grow: 1;
+    flex-basis: 200px;
+    width: 30%; /* Responsive width */
+    min-width: 200px;
+}
+
+.last-text1 b,.last-text2 b,.last-text3 b{
+    display: inline-block; /* or use block */
+   
+   margin-bottom: 2.5%;
+}
