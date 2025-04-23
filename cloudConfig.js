@@ -70,7 +70,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "Docflex_Dev",
     allowed_formats: ['pdf', 'doc', 'docx', 'pptx', 'xlsx'],
-    resource_type: 'auto',
+    resource_type: 'raw',
     type: 'upload',
     format: async (req, file) => path.extname(file.originalname).slice(1),
     invalidate: true

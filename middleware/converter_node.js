@@ -82,3 +82,4 @@ const convertToFiles = async (inputPath,outputPath, outputFormat)=> {
     }
   }
 
+module.exports = { convertToFiles };

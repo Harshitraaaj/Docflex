@@ -55,9 +55,8 @@ router.get("/wordToPdf", (req, res) => {
 // Route: Convert Word to PDF 
 router.post("/wordToPdf", upload.single("document"), async (req, res) => {
     let tempInputPath, convertedFilePath;
-    
+
     try {
-        // Validate input
         if (!req.file?.buffer) {
             return res.status(400).render('wordToPdf', {
                 downloadLink: null,
@@ -65,19 +64,20 @@ router.post("/wordToPdf", upload.single("document"), async (req, res) => {
             });
         }
 
-        // Setup paths
         const baseName = sanitizeFilename(path.parse(req.file.originalname).name);
         const timestamp = Date.now();
         const outputFileName = `${timestamp}-${baseName}.pdf`;
-        const FILES_FOLDER = process.env.NODE_ENV === "production" 
-            ? "/tmp" 
+
+        const FILES_FOLDER = process.env.NODE_ENV === "production"
+            ? "/tmp"
             : path.join(__dirname, "../files");
-        
+
+        // Paths
         tempInputPath = path.join(FILES_FOLDER, `temp_${timestamp}${path.extname(req.file.originalname)}`);
         convertedFilePath = path.join(FILES_FOLDER, outputFileName);
 
-        // Step 1: Upload original to Cloudinary
-        const uploaded = await new Promise((resolve, reject) => {
+        // Upload original to Cloudinary (raw)
+        const originalUpload = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
                     folder: "Docflex_Dev/wordToPdf",
@@ -89,7 +89,7 @@ router.post("/wordToPdf", upload.single("document"), async (req, res) => {
                 (error, result) => {
                     if (error) {
                         console.error("Cloudinary Upload Error:", error);
-                        reject(new Error("Failed to upload original document"));
+                        return reject(new Error("Failed to upload original document"));
                     }
                     resolve(result);
                 }
@@ -97,49 +97,44 @@ router.post("/wordToPdf", upload.single("document"), async (req, res) => {
             streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
         });
 
-        // Step 2: Convert document
+        // Write buffer to temp file
         fs.writeFileSync(tempInputPath, req.file.buffer);
+
+        // Convert to PDF
         await convertToFiles(tempInputPath, convertedFilePath, "pdf");
-        
+
         // Validate converted PDF
         validatePdf(convertedFilePath);
+
         const fileStats = fs.statSync(convertedFilePath);
-        if (fileStats.size < 1024) {
-            throw new Error("Converted file is too small");
-        }
+        if (fileStats.size < 1024) throw new Error("Converted file is too small");
 
-        // Step 3: Upload converted PDF
-        const convertedUpload = await new Promise((resolve, reject) => {
-            cloudinary.uploader.upload(convertedFilePath, 
-                {
-                    folder: "convertedFiles",
-                    resource_type: "auto",
-                    public_id: `${timestamp}-${baseName}`,
-                    overwrite: false,
-                    context: `original=${uploaded.public_id}`
-                },
-                (error, result) => {
-                    if (error) {
-                        console.error("Cloudinary PDF Upload Error:", error);
-                        reject(new Error("Failed to upload converted PDF"));
-                    }
-                    resolve(result);
-                }
-            );
-        });
-
-        // Step 4: Delete original from Cloudinary
-        const deletionResult = await cloudinary.uploader.destroy(uploaded.public_id, {
+        // Upload converted file
+        const convertedUpload = await cloudinary.uploader.upload(convertedFilePath, {
+            folder: "convertedFiles",
             resource_type: "raw",
-            invalidate: true
+            public_id: `${timestamp}-${baseName}`,
+            type: "upload", // <- make sure it's a standard, public upload
+            context: `original=${originalUpload.public_id}`,
+            use_filename: true,
+            unique_filename: false,
+            access_mode: "public",  // <— ADD THIS if you’re on an account that supports it
+        });
+        
+
+        // Delete original file from Cloudinary
+        const deleteOriginal = await cloudinary.uploader.destroy(originalUpload.public_id, {
+            resource_type: "raw",
         });
 
-        if (deletionResult.result !== "ok") {
-            console.error("Deletion Failed:", deletionResult);
-            throw new Error("Failed to delete original document");
+        if (deleteOriginal.result !== "ok") {
+            console.error("Cloudinary deletion failed:", deleteOriginal);
         }
 
-        // Step 5: Send response
+        console.log("Download Link:", convertedUpload.secure_url);
+
+
+        // Send converted file URL
         res.render("wordToPdf", {
             downloadLink: convertedUpload.secure_url,
             error: null
@@ -152,9 +147,11 @@ router.post("/wordToPdf", upload.single("document"), async (req, res) => {
             error: error.message
         });
     } finally {
-        // Cleanup temporary files
-        [tempInputPath, convertedFilePath].forEach(path => {
-            if (path && fs.existsSync(path)) fs.unlinkSync(path);
+        // Cleanup
+        [tempInputPath, convertedFilePath].forEach(filePath => {
+            if (filePath && fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
         });
     }
 });
