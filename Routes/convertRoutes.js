@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const { spawn } = require('child_process');
 const streamifier = require("streamifier");
 const multer = require("multer");
@@ -48,105 +49,74 @@ router.get("/wordToPdf", (req, res) => {
 });
 // Route: Convert Word to PDF 
 router.post("/wordToPdf", upload.single("document"), async (req, res) => {
-    let tempInputPath, convertedFilePath;
-
+    let convertedFilePath;
     try {
         if (!req.file?.buffer) {
-            return res.status(400).render('wordToPdf', {
+            return res.status(400).render("wordToPdf", {
                 downloadLink: null,
-                error: "No file uploaded or invalid file format"
+                error: "No file uploaded"
             });
         }
 
         const baseName = sanitizeFilename(path.parse(req.file.originalname).name);
         const timestamp = Date.now();
         const outputFileName = `${timestamp}-${baseName}.pdf`;
+        const TMP_FOLDER = process.env.NODE_ENV === "production" ? "/tmp" : path.join(__dirname, "../files");
+        convertedFilePath = path.join(TMP_FOLDER, outputFileName);
 
-        const FILES_FOLDER = process.env.NODE_ENV === "production"
-            ? "/tmp"
-            : path.join(__dirname, "../files");
-
-        // Paths
-        tempInputPath = path.join(FILES_FOLDER, `temp_${timestamp}${path.extname(req.file.originalname)}`);
-        convertedFilePath = path.join(FILES_FOLDER, outputFileName);
-
-        // Upload original to Cloudinary (raw)
+        // Upload original doc to Cloudinary (raw)
         const originalUpload = await new Promise((resolve, reject) => {
-            const uploadStream = cloudinary.uploader.upload_stream(
-                {
-                    folder: "Docflex_Dev/wordToPdf",
-                    resource_type: "raw",
-                    public_id: `${timestamp}-${baseName}`,
-                    overwrite: true,
-                    invalidate: true
-                },
-                (error, result) => {
-                    if (error) {
-                        console.error("Cloudinary Upload Error:", error);
-                        return reject(new Error("Failed to upload original document"));
-                    }
-                    resolve(result);
-                }
-            );
+            const uploadStream = cloudinary.uploader.upload_stream({
+                folder: "Docflex_Dev/wordToPdf",
+                resource_type: "raw",
+                public_id: `${timestamp}-${baseName}`,
+                overwrite: true
+            }, (err, result) => {
+                if (err) return reject(err);
+                resolve(result);
+            });
+
             streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
         });
 
-        // Write buffer to temp file
-        fs.writeFileSync(tempInputPath, req.file.buffer);
+        // Get raw file from Cloudinary (acts as input)
+        const { data: fileBuffer } = await axios.get(originalUpload.secure_url, {
+            responseType: 'arraybuffer'
+        });
+
+        // Write the buffer to temp (in /tmp for serverless-friendly storage)
+        const tempInputPath = path.join(TMP_FOLDER, `temp_${timestamp}${path.extname(req.file.originalname)}`);
+        fs.writeFileSync(tempInputPath, fileBuffer);
 
         // Convert to PDF
         await convertToFiles(tempInputPath, convertedFilePath, "pdf");
 
-        // Validate converted PDF
-        validatePdf(convertedFilePath);
-
-        const fileStats = fs.statSync(convertedFilePath);
-        if (fileStats.size < 1024) throw new Error("Converted file is too small");
-
-        // Upload converted file
+        // Upload converted PDF to Cloudinary
         const convertedUpload = await cloudinary.uploader.upload(convertedFilePath, {
             folder: "convertedFiles",
             resource_type: "raw",
             public_id: `${timestamp}-${baseName}`,
-            type: "upload", // <- make sure it's a standard, public upload
-            context: `original=${originalUpload.public_id}`,
-            use_filename: true,
-            unique_filename: false,
-            access_mode: "public",  // <— ADD THIS if you’re on an account that supports it
-        });
-        
-
-        // Delete original file from Cloudinary
-        const deleteOriginal = await cloudinary.uploader.destroy(originalUpload.public_id, {
-            resource_type: "raw",
+            access_mode: "public"
         });
 
-        if (deleteOriginal.result !== "ok") {
-            console.error("Cloudinary deletion failed:", deleteOriginal);
-        }
+        // Clean up
+        [tempInputPath, convertedFilePath].forEach(fp => fs.existsSync(fp) && fs.unlinkSync(fp));
+        await cloudinary.uploader.destroy(originalUpload.public_id, { resource_type: "raw" });
 
-        console.log("Download Link:", convertedUpload.secure_url);
-
-
-        // Send converted file URL
-        res.render("wordToPdf", {
+        // Send download link
+        return res.render("wordToPdf", {
             downloadLink: convertedUpload.secure_url,
             error: null
         });
 
-    } catch (error) {
-        console.error("Conversion Error:", error);
+    } catch (err) {
+        console.error("Error during Word to PDF:", err);
         res.status(500).render("wordToPdf", {
             downloadLink: null,
-            error: error.message
+            error: "Conversion failed. Please try again."
         });
-    } finally {
-        // Cleanup
-        [tempInputPath, convertedFilePath].forEach(filePath => {
-            if (filePath && fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-            }
-        });
+
+        if (convertedFilePath && fs.existsSync(convertedFilePath)) fs.unlinkSync(convertedFilePath);
     }
 });
 
