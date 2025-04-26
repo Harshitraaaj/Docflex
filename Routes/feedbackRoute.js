@@ -10,7 +10,9 @@ const mongoose=require("mongoose");
 
 router.get('/',authenticate,(req,res)=>{
     const name = req.user.name;
-    res.render('feedback.ejs',{name});
+    const successMessage = req.flash('success');
+    const errorMessage = req.flash('error');
+    res.render('feedback.ejs',{  name, successMessage, errorMessage });
 })
 
 router.post('/',authenticate,(req,res)=>{

@@ -11,7 +11,9 @@ router.get('/signup',(req,res)=>{
 router.post("/signup", signup);
 
 router.get('/login',(req,res)=>{
-    res.render("login");
+    const successMessage = req.flash('success');
+    const errorMessage = req.flash('error');
+    res.render("login",{successMessage, errorMessage});
 })
 router.post("/login", login);
 router.post("/logout",authenticate, logout);

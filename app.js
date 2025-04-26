@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 require('dotenv').config();
 const ejsMate = require("ejs-mate");
-const multer = require("multer");
 const cors = require("cors");
 const convertRoutes = require("./Routes/convertRoutes");
 const authRoute = require("./Routes/authRoute");
@@ -13,6 +12,7 @@ const feedbackRoute = require('./Routes/feedbackRoute');
 const userSchema = require('./models/user')
 const mongoose = require('mongoose');
 const session = require("express-session");
+const flash = require('connect-flash');
 const cookieParser = require("cookie-parser");
 const Feedback = require("./models/feedback")
 const User = require("./models/user")
@@ -50,6 +50,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // ✅ Enables JSON body parsing
+app.use(flash());
 app.use(cookieParser()); // ✅ Enables req.cookies
 app.use(methodOverride("_method"));
 app.use(verifyUser);

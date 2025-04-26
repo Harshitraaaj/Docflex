@@ -27,9 +27,13 @@ exports.signup = async (req, res) => {
         res.cookie('jwt', token);
         console.log(user);
 
+        req.flash('success', 'Signup successful! Welcome.');
+
         res.status(201).redirect("/feedback");
     } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
+        console.error(error);
+        req.flash('error', 'Something went wrong during signup.');
+        res.redirect('/signup');
     }
 };
 
@@ -40,10 +44,17 @@ exports.login = async (req, res) => {
         const user = await User.findOne({ email });
 
 
-        if (!user) return res.status(401).json({ error: "Invalid Credentials" });
+        if (!user){
+            req.flash('error', 'Invalid email or password.');
+             return res.status(401).redirect('/login');
+            
+        }
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(401).json({ error: "Invalid Credentials" });
+        if (!isMatch){
+            req.flash('error', 'Invalid email or password.');
+             return res.status(401).redirect('/login');
+        }
 
 
 
@@ -58,13 +69,18 @@ exports.login = async (req, res) => {
         await user.save();
 
         //store jwt in cookie
-        res.cookie('jwt', token).status(200).redirect('/feedback');
+        res.cookie('jwt', token);
+
+        req.flash('success', 'Logged in successfully.');
+        res.redirect('/feedback');
 
 
 
 
     } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
+        console.error(error);
+    req.flash('error', 'Server error. Try again.');
+    res.redirect('/login');
     }
 };
 

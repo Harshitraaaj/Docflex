@@ -1,19 +1,48 @@
 <%- include('partials/header') %>
 
-    <div class="row-1 offset-0.2" >
-        <div class="col col-md-8">
-            <form action="/login" method="POST" class="form-control">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        name="email">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" 
-                        name="password"><br>
-                    <button class="btn btn-danger">Submit</button>
-                </div>
+    <% if (successMessage.length> 0) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= successMessage[0] %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <a href="/signup">Signup from here</a>
+        <% } %>
 
+            <% if (errorMessage.length> 0) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= errorMessage[0] %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <% } %>
+                    <div class="login">
+                        <div class="loginicon">
+                            <img src="/svg/login_ico.svg" alt="icon">
+                        </div>
+                        <div class="form">
 
-        <%- include('partials/footer') %>
+                            <div class="d-grid col-9 mx-3 mt-5">
+                                <form action="/login" method="POST" class="form-control">
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" name="email">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password">
+                                    </div>
+
+                                    <div class="d-grid col-2 mx-1">
+                                        <button type="submit" class="btn btn-danger">Login</button>
+                                    </div>
+                                </form> <!-- form properly closed -->
+                            </div>
+
+                            <div class="d-grid col-2 mx-5 mt-3">
+                                <p>Don't have an account? <a href="/signup" style="text-decoration: none;"><b>Sign
+                                            Up</b></a></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <%- include('partials/footer') %>

@@ -278,3 +278,25 @@ html,body {
 .card {
     width: 100%; /* Make card width dynamic inside the column */
 }
+.loginicon{
+    width:40%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+}
+.form{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.login{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;    
+}
