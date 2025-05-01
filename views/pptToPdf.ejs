@@ -1,83 +1,86 @@
 <%- include('partials/header') %>
 
-
-  <div class="content">
-    <div class="upload-section">
-      <div class="text-center mt-5 ">
-        <p> Docflex</p>
-        <h1><b>  PDF converter </b></h1>
+<div class="content">
+  <div class="upload-section">
+    <div class="text-center mt-5">
+      <p>Docflex</p>
+      <h1><b>PPT to PDF Converter</b></h1>
+    </div>
+    <div class="texte">
+      <div class="text-center my-4">
+        Drag and drop a Microsoft PowerPoint document (PPT or PPTX) to convert to PDF.
       </div>
-      <div class="text">
-        <div class="text-center my-5">Drag and drop a PDF,Convert a PDF,Microsoft Word,Excel,PowerPoint,or image file.</div>
-        <div class="d-flex justify-content-center">
-          <form action="/pptToPdf" method="POST" enctype="multipart/form-data" class="form-control upload">
-            <input id="uploadb" type="file" name= "document" accept=".ppt, .pptx" >
-            <button type="submit" class=" btn btn-outline-primary">Select a file</button> 
-        </form>
-        <% if (downloadLink) { %>
-          <h3>Conversion Successful! Click below to download:</h3>
-          <a href="<%= downloadLink %>" id="downloadBtn">
-              <button>Download PDF</button>
-          </a>
-      <% } %>
-       
+
+      <div class="upload-row justify-content-center align-items-start">
+        <% if (!downloadLink) { %>
+          <form action="/pptToPdf" method="POST" enctype="multipart/form-data"
+            class="form-control upload text-center mb-3 me-3">
+            <input id="uploadb" type="file" name="document" accept=".ppt,.pptx" class="form-control mb-2">
+            <button type="submit" class="btn btn-outline-primary mt-2">Select a file</button>
+          </form>
+        <% } else if (downloadLink) { %>
+          <div class="downloadBox conversion-message text-center">
+            <p>Conversion Successful!<br>Click below to download your PDF file.</p>
+            <a href="<%= downloadLink %>" id="downloadBtn" role="button">
+              <button class="btn btn-outline-primary" type="button">Download PDF</button>
+            </a>
+          </div>
+        <% } %>
       </div>
     </div>
-    
-  
-    <div class=" bottom-text">
-      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.<br>
+
+    <div class="bottom-text">
+      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.
+        <i class="fa-solid fa-circle-info"></i><br>
         By using this service, you agree to the Adobe Terms of Use and Privacy Policy.</span>
     </div>
- 
   </div>
-  
-  
-  
-  
-  </div>
-  
-  
-  <div class=" belowtext"><b>8M* files uploaded!<br>
-    Join millions of users who have successfully converted PDFs using Docflex.
-  </b></div>
+</div>
+<br>
 
-  <div class="instruction">
-    <div class="instruction-text">
-      <h2>How to convert a PPT to PDF</h2>
-      <p>Follow these easy steps to turn a Microsoft PowerPoint presentation into a PDF:</p>
-      <hr class="hr-tag">
-      <p><b>1.</b> Click the "Select a file" button above, or drag and drop a file into the drop zone.</p>
-      <hr class="hr-tag">
-      <p><b>2.</b> Select the PPTX or PPT file you want to convert to PDF.</p>
-      <hr class="hr-tag">
-      <p><b>3.</b> Watch as DocFlex automatically converts the file from PPT and saves it as a PDF.</p>
-      <hr class="hr-tag">
-      <p><b>4.</b> Download your new PDF or sign in to share it.</p>
-      <hr class="hr-tag">
-    </div>
-    <div class="instruction-img"></div>
+<div class="belowtext"><b>8M* files uploaded!<br>
+    Join millions of users who have successfully converted PDFs using Docflex.</b>
+</div>
+
+<div class="instruction">
+  <div class="instruction-text">
+    <h2>How to convert PowerPoint to PDF files</h2>
+    <p>Follow these steps to easily turn Microsoft PowerPoint files into PDFs:</p>
+    <hr class="hr-tag">
+    <p><b>1.</b> Click the "Select a file" button above, or drag and drop your PPT document into the drop zone.</p>
+    <hr class="hr-tag">
+    <p><b>2.</b> Choose the PPT or PPTX file you want to convert to PDF.</p>
+    <hr class="hr-tag">
+    <p><b>3.</b> Watch as Docflex automatically converts the file for you.</p>
+    <hr class="hr-tag">
+    <p><b>4.</b> Download your new PDF, or sign in to share it.</p>
+    <hr class="hr-tag">
   </div>
-  
-  <div class="last">
-    <div class="last-heading">
-      <h1>Try converting PPT to PDF for free</h1>
+  <div class="instruction-img"></div>
+</div>
+
+<div class="last">
+  <div class="last-heading">
+    <h1>Try our free PowerPoint to PDF conversion tool</h1>
+  </div>
+  <div class="last-box">
+    <div class="last-text1">
+      <p><b>Convert PowerPoint files to PDF online</b><br>
+        Use Docflex online services to convert Microsoft PowerPoint presentations into PDF files.
+        The converted file can be downloaded easily, and you can share it with others when you sign in.</p>
     </div>
-    <div class="last-box">
-      <div class="last-text1">
-        <p><b>Switch from PPT to PDF online</b><br>
-          Turn any Microsoft PowerPoint presentation into a PDF file with the DocFlex PPT to PDF converter. Download the converted file with a click or sign in to share your PDF.</p>
-      </div>
-      <div class="last-text2">
-        <p><b>Fast PPTX to PDF conversion</b><br>
-          Go from a PPTX file to a PDF document in record time. Simply drag and drop a file into the online tool. Then retrieve your new file format in a matter of seconds.</p>
-      </div>
-      <div class="last-text3">
-        <p><b>Edit for free in PPT online</b><br>
-          With DocFlex, you can edit Microsoft PowerPoint spreadsheets online for free when you sign in. Simply allow DocFlex to open a PPT file in Microsoft PowerPoint for the web.</p>
-      </div>
+    <div class="last-text2">
+      <p><b>Fast PDF conversion of PPT files</b><br>
+        Convert your file in seconds and keep your projects moving.
+        Drag and drop or upload a PPT or PPTX file to our online tool and watch your file convert into a PDF document.
+      </p>
+    </div>
+    <div class="last-text3">
+      <p><b>Reliable, trusted file conversion</b><br>
+        Thanks to the high-quality Docflex PDF tools, your PPT content will look as expected in the
+        resulting PDF file, keeping page elements intact.</p>
     </div>
   </div>
-  
-  <%- include('partials/footer') %>
-  
+</div>
+
+<%- include('partials/footer') %>

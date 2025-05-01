@@ -1,22 +1,21 @@
 <%- include('partials/header') %>
 
-
-
-  <div class="content">
-    <div class="upload-section">
-      <div class="text-center mt-5 ">
-        <p> Docflex</p>
-        <h1><b> PDF converter </b></h1>
+<div class="content">
+  <div class="upload-section">
+    <div class="text-center mt-5">
+      <p>Docflex</p>
+      <h1><b>PDF Converter</b></h1>
+    </div>
+    <div class="text">
+      <div class="text-center my-4">
+        Drag and drop an image file (JPG, JPEG, HEIC) to compress and convert to PDF.
       </div>
-      <div class="text">
-        <div class="text-center my-5">Drag and drop a PDF,Convert a PDF,Microsoft Word,Excel,PowerPoint,or image file.
-        </div>
-        <div class="d-flex justify-content-center">
-          <form action="/compressimg" method="POST" enctype="multipart/form-data" class="form-control upload">
-            <input id="uploadb" type="file" name="document" accept=" .jpg,.jpeg,.heic">
-            <button type="submit" class=" btn btn-outline-primary">Select a file</button>
 
-            <div class="btn-group row-2" role="group" aria-label="Basic radio toggle button group">
+      <div class="upload-row justify-content-center align-items-start">
+        <% if (!downloadLink) { %>
+          <form action="/compressimg" method="POST" enctype="multipart/form-data" class="form-control upload text-center mb-3 me-3">
+            <input id="uploadb" type="file" name="document" accept=".jpg,.jpeg,.heic" class="form-control mb-2">
+            <div class="btn-group my-2" role="group" aria-label="Compression level">
               <input type="radio" class="btn-check" name="level" id="btnradio1" value="Low" autocomplete="off">
               <label class="btn btn-outline-primary" for="btnradio1">Low</label>
 
@@ -26,75 +25,71 @@
               <input type="radio" class="btn-check" name="level" id="btnradio3" value="High" autocomplete="off">
               <label class="btn btn-outline-primary" for="btnradio3">High</label>
             </div>
+            <button type="submit" class="btn btn-outline-primary mt-2">Select a file</button>
           </form>
-          <% if (downloadLink) { %>
-            <h3>Conversion Successful! Click below to download:</h3>
-            <a href="<%= downloadLink %>" id="downloadBtn">
-              <button>Download PDF</button>
+        <% } else if (downloadLink) { %>
+          <div class="downloadBox conversion-message text-center">
+            <p>Conversion Successful!<br>Click below to download your PDF file.</p>
+            <a href="<%= downloadLink %>" id="downloadBtn" role="button">
+              <button class="btn btn-outline-primary" type="button">Download PDF</button>
             </a>
-            <% } %>
-
-        </div>
+          </div>
+        <% } %>
       </div>
-
-
-      <div class=" bottom-text">
-        <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.<br>
-          By using this service, you agree to the Adobe Terms of Use and Privacy Policy.</span>
-      </div>
-
     </div>
 
-
-
-
+    <div class="bottom-text">
+      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.
+        <i class="fa-solid fa-circle-info"></i><br>
+        By using this service, you agree to the Adobe Terms of Use and Privacy Policy.</span>
+    </div>
   </div>
+</div>
+<br>
 
+<div class="belowtext"><b>8M* files uploaded!<br>
+  Join millions of users who have successfully converted PDFs using Docflex.</b>
+</div>
 
-  <div class=" belowtext"><b>8M* files uploaded!<br>
-      Join millions of users who have successfully converted PDFs using Docflex.
-    </b></div>
-  <div class="instruction">
-    <div class="instruction-text">
-      <h2>How to convert Word documents to PDF files</h2>
-      <p>Follow these steps to easily turn Microsoft Word files into PDFs:</p>
-      <hr class="hr-tag">
-      <p> <b>1.</b> Click the "Select a file" button above, or drag and drop your Word document into the drop zone.</p>
-      <hr class="hr-tag">
-      <p><b>2.</b> Choose the RTF, TXT, DOCX, or DOC file you want to convert to PDF.</p>
-      <hr class="hr-tag">
-      <p><b>3.</b> Watch as Acrobat automatically converts the file for you.</p>
-      <hr class="hr-tag">
-      <p> <b>4.</b> Download your new PDF, or sign in to share it.</p>
-      <hr class="hr-tag">
-    </div>
-    <div class="instruction-img"></div>
+<div class="instruction">
+  <div class="instruction-text">
+    <h2>How to convert images to compressed PDF files</h2>
+    <p>Follow these steps to compress and convert image files into PDFs:</p>
+    <hr class="hr-tag">
+    <p><b>1.</b> Click the "Select a file" button above, or drag and drop your image file into the drop zone.</p>
+    <hr class="hr-tag">
+    <p><b>2.</b> Choose a JPG, JPEG, or HEIC image you want to convert.</p>
+    <hr class="hr-tag">
+    <p><b>3.</b> Select your preferred compression level (Low, Mid, or High).</p>
+    <hr class="hr-tag">
+    <p><b>4.</b> Watch as Docflex automatically compresses and converts the image into a PDF.</p>
+    <hr class="hr-tag">
+    <p><b>5.</b> Download your new compressed PDF, or sign in to share it.</p>
+    <hr class="hr-tag">
   </div>
+  <div class="instruction-img"></div>
+</div>
 
-  <div class="last">
-    <div class="last-heading">
-      <h1>Try our free Word to PDF conversion tool</h1>
-    </div>
-    <div class="last-box">
-      <div class="last-text1">
-        <p><b>Convert Word files to PDF online</b><br>
-          Use Adobe Acrobat online services to convert Microsoft Word documents into PDF files.
-          The converted file can be downloaded easily, and you can share it with others when you sign in.</p>
-      </div>
-      <div class="last-text2">
-        <P><b>Fast PDF conversion of Word files</b><br>
-          Convert your file in seconds and keep your projects moving.
-          Drag and drop or upload a DOC or DOCX file to our online tool and watch your file convert into a PDF document.
-        </P>
-      </div>
-      <div class="last-text3">
-        <p><b>Reliable, trusted file conversion</b><br>
-          Thanks to the high-quality Acrobat PDF tools, your Word content will look as expected in the
-          resulting PDF file, keeping page elements intact.</p>
-      </div>
-    </div>
-
-
+<div class="last">
+  <div class="last-heading">
+    <h1>Try our free Image to PDF compression tool</h1>
   </div>
+  <div class="last-box">
+    <div class="last-text1">
+      <p><b>Compress and convert images to PDF online</b><br>
+        Use Docflex to compress and convert image files into high-quality PDF documents.
+        Upload your photo and get a downloadable, optimized PDF file instantly.</p>
+    </div>
+    <div class="last-text2">
+      <p><b>Fast, flexible image compression</b><br>
+        Choose your compression level, upload your file, and get a PDF within seconds —
+        perfect for sharing or archiving.</p>
+    </div>
+    <div class="last-text3">
+      <p><b>Reliable and secure conversions</b><br>
+        Docflex ensures your converted PDFs maintain image clarity while reducing file size.</p>
+    </div>
+  </div>
+</div>
 
-  <%- include('partials/footer') %>
+<%- include('partials/footer') %>

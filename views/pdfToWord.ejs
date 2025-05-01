@@ -1,83 +1,84 @@
 <%- include('partials/header') %>
 
+<div class="content">
+  <div class="upload-section">
+    <div class="text-center mt-5">
+      <p>Docflex</p>
+      <h1><b>Convert PDF to Word</b></h1>
+    </div>
 
-  <div class="content">
-    <div class="upload-section">
-      <div class="text-center mt-5 ">
-        <p> Docflex</p>
-        <h1><b> Convert PDF to Word </b></h1>
+    <div class="text">
+      <div class="text-center my-4">
+        Drag and drop a PDF file to convert it into a Microsoft Word (DOCX) document.
       </div>
-      <div class="text">
-        <div class="text-center my-5">Drag and drop a PDF,Convert a PDF,Microsoft Word,Excel,PowerPoint,or image file.</div>
-        <div class="d-flex justify-content-center">
-          <form action="/pdfToWord" method="POST" enctype="multipart/form-data" class="form-control upload">
-            <input id="uploadb" type="file" name= "document" accept=".pdf" >
-            <button type="submit" class=" btn btn-outline-primary">Select a file</button> 
-        </form>
-        <% if (downloadLink) { %>
-          <h3>Conversion Successful! Click below to download:</h3>
-          <a href="<%= downloadLink %>" id="downloadBtn">
-              <button>Download PDF</button>
-          </a>
-      <% } %>
 
-    
-       
+      <div class="upload-row justify-content-center align-items-start">
+        <% if (!downloadLink) { %>
+          <form action="/pdfToWord" method="POST" enctype="multipart/form-data" class="form-control upload text-center mb-3 me-3">
+            <input id="uploadb" type="file" name="document" accept=".pdf" class="form-control mb-2">
+            <button type="submit" class="btn btn-outline-primary mt-2">Select a file</button>
+          </form>
+        <% } else if (downloadLink) { %>
+          <div class="downloadBox conversion-message text-center">
+            <p>Conversion Successful!<br>Click below to download your Word file.</p>
+            <a href="<%= downloadLink %>" id="downloadBtn" role="button">
+              <button class="btn btn-outline-primary" type="button">Download Word File</button>
+            </a>
+          </div>
+        <% } %>
       </div>
     </div>
-    
-  
-    <div class=" bottom-text">
-      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.<br>
+
+    <div class="bottom-text">
+      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.
+        <i class="fa-solid fa-circle-info"></i><br>
         By using this service, you agree to the Adobe Terms of Use and Privacy Policy.</span>
     </div>
- 
   </div>
-  
-  
-  
-  
-  </div>
-  
-  <div class=" belowtext"><b>8M* files uploaded!<br>
-    Join millions of users who have successfully converted PDFs using Docflex.
-  </b></div>
+</div>
+<br>
 
-  <div class="instruction">
-    <div class="instruction-text">
-      <h2>How to convert PDF to Word</h2>
-      <p>Follow these easy steps to convert your PDF files into Microsoft Word (DOCX):</p>
-      <hr class="hr-tag">
-      <p> <b>1.</b> Click the "Select a file" button above, or drag and drop a file into the drop zone.</p>
-      <hr class="hr-tag">
-      <p><b>2.</b> Select the PDF you want to convert to the DOCX file format.</p>
-      <hr class="hr-tag">
-      <p><b>3.</b> Watch Docflex automatically convert the file from PDF to an editable Word document.</p>
-      <hr class="hr-tag">
-      <p> <b>4.</b> Download your file. If you use the tool again, you may be asked to sign in to download it.</p>
-      <hr class="hr-tag">
-    </div>
-    <div class="instruction-img"></div>
+<div class="belowtext"><b>8M* files uploaded!<br>
+  Join millions of users who have successfully converted PDFs using Docflex.</b>
+</div>
+
+<div class="instruction">
+  <div class="instruction-text">
+    <h2>How to convert PDF to Word</h2>
+    <p>Follow these easy steps to convert your PDF into an editable Word document:</p>
+    <hr class="hr-tag">
+    <p><b>1.</b> Click the "Select a file" button above, or drag and drop a PDF into the drop zone.</p>
+    <hr class="hr-tag">
+    <p><b>2.</b> Choose the PDF you want to convert to DOCX format.</p>
+    <hr class="hr-tag">
+    <p><b>3.</b> Docflex will automatically convert your file into a Word document.</p>
+    <hr class="hr-tag">
+    <p><b>4.</b> Download your new file. You may be asked to sign in for additional features.</p>
+    <hr class="hr-tag">
   </div>
-  
-  <div class="last">
-    <div class="last-heading">
-      <h1>Try our free PDF to Word converter</h1>
+  <div class="instruction-img">
+    <!-- You can add an illustration for PDF to Word conversion here -->
+  </div>
+</div>
+
+<div class="last">
+  <div class="last-heading">
+    <h1>Try our free PDF to Word converter</h1>
+  </div>
+  <div class="last-box">
+    <div class="last-text1">
+      <p><b>Turn PDFs into editable Word files</b><br>
+        Converting PDF to Word is fast and easy—drag and drop your file, and download the DOCX version instantly.</p>
     </div>
-    <div class="last-box">
-      <div class="last-text1">
-        <p><b>Turn PDFs into editable Word files</b><br>
-          Learning how to convert PDF to Word is quick and easy. Simply drag and drop your PDF, then download the converted Word file.</p>
-      </div>
-      <div class="last-text2">
-        <P><b>Convert PDF to DOCX fast</b><br>
-          Docflex turns PDF files into the DOCX file format in seconds. When you convert PDF to DOCX with our conversion tool, your formatting will look as expected.</P>
-      </div>
-      <div class="last-text3">
-        <p><b>Edit your Word file for free</b><br>
-          After you use our PDF to Word converter tool, you can edit the converted file in Microsoft Word for the web right from Docflex. All you have to do is sign in.</p>
-      </div>
+    <div class="last-text2">
+      <p><b>Fast and accurate conversion</b><br>
+        Docflex preserves formatting while converting PDFs into high-quality Word documents in seconds.</p>
+    </div>
+    <div class="last-text3">
+      <p><b>Edit with Microsoft Word</b><br>
+        After converting your file, you can easily edit it with Microsoft Word. Sign in to access additional editing options online.</p>
     </div>
   </div>
-  
-  <%- include('partials/footer') %>
+</div>
+
+<%- include('partials/footer') %>

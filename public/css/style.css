@@ -1,198 +1,321 @@
-
-
-/*Red-box*/
-.content {
-    background-color: #fc6767;
-    width: 100%;
-    /* Adjust this to cover more than half the page */
-    height: 600px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
+/* Base Styles (Mobile First) */
+:root {
+    --primary-color: #fc6767;
+    --secondary-color: #f9f9f9;
+    --text-color: #333;
+    --border-color: #ccc;
 }
 
-.upload-section {
-
-    width: 90%;
+html, body {
+    font-size: 16px;
+    box-sizing: border-box;
     height: 100%;
-    background-color: white;
-    position: relative;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/* Red-box background */
+.content {
+    background-color: var(--primary-color);
+    min-height: 80vh;
+    padding: 0 !important;
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
     flex-direction: column;
-    border: 0.5px solid grey;
-    border-radius: 10px;
-    margin-top: 65px;
-    z-index: 2;
-
+    align-items: center;
 }
 
-.text-center {
-    font-size: 1.2rem;
-    position: relative;
-    margin-top: 7%;
-
-}
-
-.text-center h1 {
-    line-height: 0.2;
-}
-
-
-.text {
-    width: 93%;
-    height: 65%;
-    /* Let content decide height */
+/* Upload section */
+.upload-section {
     background-color: white;
-    border: 2px dashed grey;
-    border-radius: 10px;
-    padding: 2rem;
-    margin: auto;
-    /* Centering */
-    margin-top: 20px;
-    /* Space below */
-    position: relative;
+    width: 90%;
+    min-height: 85vh;
+    max-width: 1200px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin: 1rem 0;
+}
+
+/* Header text */
+.upload-section p {
+    font-size: 1rem;
+    margin: 0.1rem 0;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.upload-section h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Main drop area */
+.texte {
+    width: 100%;
+    border: 2px dashed var(--border-color);
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-
-
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 1rem 0;
+    overflow-y: auto;
+    transition: border-color 0.3s ease;
+    max-height: none;
+    padding-bottom: 2rem;
 }
 
-.text:hover {
-    border-color: black;
+.texte:hover {
+    border-color: #000;
 }
 
-.custom-hover:hover {
-    color: red !important;
-    /* Text color */
-}
-
-
-.pdf {
-    position: absolute;
-    padding: 2rem;
-}
-
-
-.icon-container {
+/* Icon row */
+.icons {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 140px;
-
+    gap: 1rem;
+    margin: 1rem 0;
 }
-
-.word-icon .excel-icon {
-    width: 60px;
-    height: 60px;
-    margin: 30px;
-
-}
-
-.pdf-icon {
-    width: 70px;
-    height: 70px;
-    opacity: 1;
-    /* Start visible */
-    transform: translateX(0);
-    transition: transform 0.3s ease-in-out;
-}
-
-
 
 .icons img {
-
-    width: 5vw;
-    height:8vh;
+    width: 40px;
+    height: auto;
+    max-width: 100%;
 }
 
+/* Upload + Message side-by-side */
+.upload-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: 1rem;
+}
 
+.upload-row form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
 
+form.upload input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
 
-
-.belowtext {
-
-    position: relative;
-    z-index: 3;
+/* Conversion message */
+.conversion-message {
     text-align: center;
-    margin-top: 8%;
-    font-size: 1rem;
+    padding: 1rem;
+}
 
+/* Download button section */
+#downloadBtn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+#downloadBtn:hover {
+    opacity: 0.9;
+}
+
+/* Text sections */
+.belowtext {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-top: 5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
 }
 
 .bottom-text {
-    margin: auto;
-    padding: 2%;
+    text-align: start;
+    font-size: 0.65rem;
+    color: var(--text-color);
+    margin: 2rem 0;
+    padding-bottom: 2rem;
+    line-height: 1.5;
+}
+
+/* Instruction section */
+.instruction {
+    display: flex;
+    justify-content: flex-start;
+                                           
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 1rem;
+}
+
+.instruction-text {
+    
+    width: 100%;
+    max-width: 600px;
+    margin: 0 4rem;
+}
+
+.instruction h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.hr-tag {
+    width: 80%;
+    max-width: 500px;
+    margin: 1rem auto;
+    border: 1px solid var(--border-color);
+}
+
+/* Last section */
+.last {
+    margin: 2rem 0;
     text-align: center;
-    font-size: 0.9rem;
 }
 
-.instruction{
-    position: relative;
-    display: flex;
-    align-items: start;
-    margin-top: 2.5%;
+.last-heading h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
 }
-.instruction-text{
-    position: relative;
+
+.last-box {
     display: flex;
-    justify-content: center;
-    align-items: start;
     flex-direction: column;
-    margin-left: 5%;
-}
-.instruction h2{
-    font-size: 2.3rem;
-    margin-top: 5%;
-    margin-bottom: 2%;
-}
-.instruction p{
-    margin-top: 2.5%;
-    margin-bottom: 2.5%;
-}
-.hr-tag{
-    border: 1px solid black;
-    width:50vw;
-}
-.last{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5%;
-    flex-direction: column;
-    flex-wrap: wrap;
-    margin-bottom: 5%;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.last-box{
-    position: relative;
-    display: flex;
-    gap: 2%;
-    justify-content: center;
-    margin-top: 2.5%;
-    margin-bottom: 2%;
-    flex-wrap: wrap;
-    width:100%;
+.last-text1,
+.last-text2,
+.last-text3 {
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background-color: var(--secondary-color);
+    line-height: 1.6;
+}
+.downloadBox {
+    font-size: 1.5rem;
+    max-width: 600px;;
+    border: 1px solid #D3D3D3;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: popIn 0.5s ease-in-out;
 }
 
-.last-text1,.last-text2,.last-text3{
-   
-    padding: 2%;
-    flex-grow: 1;
-    flex-basis: 200px;
-    width: 30%; /* Responsive width */
-    min-width: 200px;
+.downloadBox:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.last-text1 b,.last-text2 b,.last-text3 b{
-    display: inline-block; /* or use block */
-   
-   margin-bottom: 2.5%;
+@keyframes popIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+/* ========== Responsive ========== */
+@media (min-width: 480px) {
+    .upload-section {
+        padding: 2rem;
+    }
+
+    .upload-section h1 {
+        font-size: 1.75rem;
+    }
+
+    .instruction h2 {
+        font-size: 1.75rem;
+    }
+
+    .last-box {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .last-text1,
+    .last-text2,
+    .last-text3 {
+        flex: 1 1 300px;
+    }
+
+    
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 18px;
+    }
+
+    .content {
+        padding: 2rem;
+    }
+
+    .upload-row {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .upload-row form {
+        flex: 1;
+        max-width: none;
+    }
+
+    .conversion-message {
+        flex: 1;
+        padding: 0 2rem;
+    }
+
+    .instruction {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .instruction-text {
+        flex: 1;
+    }
+}
+
+@media (min-width: 1024px) {
+    .upload-section h1 {
+        font-size: 2rem;
+    }
+
+    .instruction h2 {
+        font-size: 2rem;
+    }
+
+    .icons img {
+        width: 50px;
+    }
+}
+
+/* Tablet Landscape & Small Laptops */
+@media (min-width: 1280px) {
+    .content {
+        padding: 3rem;
+    }
+
+    .upload-section {
+        padding: 3rem;
+    }
 }

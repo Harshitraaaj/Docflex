@@ -1,34 +1,35 @@
 <%- include('partials/header') %>
 
 <% if (successMessage.length > 0) { %>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <%= successMessage[0] %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= successMessage[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (errorMessage.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= errorMessage[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<section class="feedback-header">
+  <div class="feedback-image-wrapper">
+    <img src="/feedbacks.jpg" alt="Feedback" class="feedback-image" />
+    <div class="feedback-text">
+      <h1>Feedback</h1>
+      <p>We value your opinion</p>
     </div>
-  <% } %>
-  
-  <% if (errorMessage.length > 0) { %>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <%= errorMessage[0] %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <% } %>
-  
+  </div>
+</section>
 
-
-
-
-<h1>feedback</h1>
-
-
-
-<form action="/feedback" method="POST"  >
-    <b>Author: <%= name %></b><br>
-    <input type="text" name="feedback" placeholder="feedback">
-    <button>Submit</button>
-</form>
-
-
-
+<section class="feedback-form">
+  <form action="/feedback" method="POST">
+    <b><i class="fa-solid fa-user"></i> &nbsp;Author: <%= name %></b><br>
+    <input type="text" name="feedback" style="width:auto; height: 8rem;" placeholder="write Your feedback..." required />
+    <button type="submit" class="btn btn-outline-primary">Submit</button>
+  </form>
+</section>
 
 <%- include('partials/footer') %>

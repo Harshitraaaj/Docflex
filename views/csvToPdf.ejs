@@ -1,86 +1,83 @@
 <%- include('partials/header') %>
 
-
-
-  <div class="content">
-    <div class="upload-section">
-      <div class="text-center mt-5 ">
-        <p> Docflex</p>
-        <h1><b>  PDF converter </b></h1>
+<div class="content">
+  <div class="upload-section">
+    <div class="text-center mt-5">
+      <p>Docflex</p>
+      <h1><b>PDF Converter</b></h1>
+    </div>
+    <div class="text">
+      <div class="text-center my-4">
+        Drag and drop a spreadsheet file to convert Excel (XLS, XLSX) or CSV to PDF.
       </div>
-      <div class="text">
-        <div class="text-center my-5">Drag and drop a PDF,Convert a PDF,Microsoft Word,Excel,PowerPoint,or image file.</div>
-        <div class="d-flex justify-content-center">
-          <form action="/csvToPdf" method="POST" enctype="multipart/form-data" class="form-control upload">
-            <input id="uploadb" type="file" name= "document" accept=" .xlsx,.csv, .xls" >
-            <button type="submit" class=" btn btn-outline-primary">Select a file</button> 
-        </form>
-       
-        <% if (downloadLink) { %>
-          <h3>Conversion Successful! Click below to download:</h3>
-          <a href="<%= downloadLink %>" id="downloadBtn">
-              <button>Download PDF</button>
-          </a>
-      <% } %>
+
+      <div class="upload-row justify-content-center align-items-start">
+        <% if (!downloadLink) { %>
+          <form action="/csvToPdf" method="POST" enctype="multipart/form-data" class="form-control upload text-center mb-3 me-3">
+            <input id="uploadb" type="file" name="document" accept=".xlsx,.csv,.xls" class="form-control mb-2">
+            <button type="submit" class="btn btn-outline-primary mt-2">Select a file</button>
+          </form>
+        <% } else if (downloadLink) { %>
+          <div class="downloadBox conversion-message text-center">
+            <p>Conversion Successful!<br>Click below to download your PDF file.</p>
+            <a href="<%= downloadLink %>" id="downloadBtn" role="button">
+              <button class="btn btn-outline-primary" type="button">Download PDF</button>
+            </a>
+          </div>
+        <% } %>
       </div>
     </div>
-    
-  
-    <div class=" bottom-text">
-      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.<br>
+
+    <div class="bottom-text">
+      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.
+        <i class="fa-solid fa-circle-info"></i><br>
         By using this service, you agree to the Adobe Terms of Use and Privacy Policy.</span>
     </div>
- 
   </div>
-  
-  
-  
-  
-  </div>
-  
+</div>
+<br>
 
-  <div class=" belowtext"><b>8M* files uploaded!<br>
-    Join millions of users who have successfully converted PDFs using Docflex.
-  </b></div>
-  <div class="instruction">
-    <div class="instruction-text">
-      <h2>How to convert Excel files to PDF</h2>
-      <p>Follow these easy steps to learn how to convert Excel files to PDFs online:</p>
-      <hr class="hr-tag">
-      <p><b>1.</b> Click the "Select a file" button above, or drag and drop an Excel file into the drop zone.</p>
-      <hr class="hr-tag">
-      <p><b>2.</b> Select the XLS or XLSX file you want to convert to PDF format.</p>
-      <hr class="hr-tag">
-      <p><b>3.</b> Watch as Docflex automatically converts your spreadsheet to PDF.</p>
-      <hr class="hr-tag">
-      <p><b>4.</b> Download your new PDF, or sign in to share it.</p>
-      <hr class="hr-tag">
+<div class="belowtext"><b>8M* files uploaded!<br>
+  Join millions of users who have successfully converted PDFs using Docflex.</b>
+</div>
+
+<div class="instruction">
+  <div class="instruction-text">
+    <h2>How to convert Excel or CSV files to PDF</h2>
+    <p>Follow these easy steps to convert spreadsheets into PDFs:</p>
+    <hr class="hr-tag">
+    <p><b>1.</b> Click the "Select a file" button above, or drag and drop a spreadsheet file into the drop zone.</p>
+    <hr class="hr-tag">
+    <p><b>2.</b> Choose the XLS, XLSX, or CSV file you want to convert.</p>
+    <hr class="hr-tag">
+    <p><b>3.</b> Watch as Docflex automatically converts your file into a PDF.</p>
+    <hr class="hr-tag">
+    <p><b>4.</b> Download your new PDF, or sign in to share it.</p>
+    <hr class="hr-tag">
+  </div>
+  <div class="instruction-img">
+    <!-- You can add an image of Excel to PDF conversion here -->
+  </div>
+</div>
+
+<div class="last">
+  <div class="last-heading">
+    <h1>Try our free Excel/CSV to PDF converter</h1>
+  </div>
+  <div class="last-box">
+    <div class="last-text1">
+      <p><b>Convert Excel and CSV files to PDF online</b><br>
+        Use Docflex to convert Microsoft Excel or CSV files into high-quality PDF documents instantly.</p>
     </div>
-    <div class="instruction-img">
-      <!-- You can add an image of Excel to PDF conversion here -->
+    <div class="last-text2">
+      <p><b>Fast and efficient file conversion</b><br>
+        Upload your spreadsheet or CSV file, and within seconds, you'll have a ready-to-download PDF document.</p>
+    </div>
+    <div class="last-text3">
+      <p><b>Reliable, accurate formatting</b><br>
+        Your tables, cells, and styles remain perfectly preserved in the final PDF output using Docflex’s trusted tools.</p>
     </div>
   </div>
-  
-  <div class="last">
-    <div class="last-heading">
-      <h1>Try our free Excel to PDF converter</h1>
-    </div>
-    <div class="last-box">
-      <div class="last-text1">
-        <p><b>Convert Excel files to PDF online</b><br>
-          Create PDF files with ease with Docflex online. Our Excel to PDF converter tool lets you turn Microsoft Excel spreadsheets into PDF documents.</p>
-      </div>
-      <div class="last-text2">
-        <p><b>Fast Excel to PDF conversion</b><br>
-          Converting an Excel worksheet into a new PDF file only takes a few seconds. Just drag and drop a workbook, or upload an Excel document from your saved folders.</p>
-      </div>
-      <div class="last-text3">
-        <p><b>Reliable, trusted file conversion</b><br>
-          Thanks to Docflex's high-quality PDF tools, your spreadsheet content will look perfect in the resulting PDF file, keeping all data and formatting intact.</p>
-      </div>
-    </div>
-  </div>
-  
-  
-  
-  <%- include('partials/footer') %>
+</div>
+
+<%- include('partials/footer') %>

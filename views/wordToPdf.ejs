@@ -4,52 +4,51 @@
 
   <div class="content">
     <div class="upload-section">
-      <div class="text-center mt-5 ">
+      <div class="text-center ">
         <p> Docflex</p>
         <h1><b> Word to PDF Converter </b></h1>
       </div>
-      <div class="text">
+      <div class="texte">
         <div class="icons">
           <img src="/svg/word.svg" alt="word">
           <img src="/svg/right_arrow.svg" alt="arrow">
           <img src="/svg/pdf.svg" alt="pdf">
         </div>
 
-        <div class="text-center my-5">Select a Microsoft Word document (Docx or Doc) to Convert to PDF.</div>
-        <div class="d-flex justify-content-center">
-          <form action="/wordToPdf" method="POST" enctype="multipart/form-data" class="form-control upload">
-            <input id="uploadb" type="file" name="document" accept=".doc,.docx">
-            <button type="submit" class=" btn btn-outline-primary">Select a file</button>
+        <div class="text-center">Select a Microsoft Word document (Docx or Doc) to Convert to PDF.</div>
+        <div class="upload-row justify-content-center align-items-start">
+       <%   if(!downloadLink) { %>
+          <form action="/wordToPdf" method="POST" enctype="multipart/form-data"
+            class="form-control upload text-center mb-3 me-3">
+            <input id="uploadb" type="file" name="document" accept=".doc,.docx" class="form-control mb-2">
+            <button type="submit" class="btn btn-outline-primary mt-2">Select a file</button>
           </form>
-          <% if (downloadLink) { %>
-            <h3>Conversion Successful! Click below to download:</h3>
-            <a href="<%= downloadLink %>" id="downloadBtn">
-                <button>Download PDF</button>
-            </a>
-        <% } %>
 
-
-
-
+          <%} else if (downloadLink) { %>
+            <div class="downloadBox conversion-message text-center">
+              <p>Conversion Successful!<br>Click below to download your PDF file.</p>
+              <a href="<%= downloadLink %>" id="downloadBtn" role="button">
+                <button class="btn btn-outline-primary" type="button">Download PDF</button>
+              </a>
+            </div>
+            <% } %>
         </div>
+
+
       </div>
-
-
-      <div class=" bottom-text">
-        <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.<br>
+      <div class=" bottom-text ">
+        <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.  <i class="fa-solid fa-circle-info"></i><br>
           By using this service, you agree to the Adobe Terms of Use and Privacy Policy.</span>
       </div>
 
     </div>
-
-
-
-
   </div>
+  <br>
 
   <div class=" belowtext"><b>8M* files uploaded!<br>
-      Join millions of users who have successfully converted PDFs using Docflex.
-    </b></div>
+      Join millions of users who have successfully converted PDFs using Docflex.</b>
+  </div>
+
   <div class="instruction">
     <div class="instruction-text">
       <h2>How to convert Word documents to PDF files</h2>

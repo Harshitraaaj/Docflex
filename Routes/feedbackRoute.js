@@ -15,18 +15,24 @@ router.get('/',authenticate,(req,res)=>{
     res.render('feedback.ejs',{  name, successMessage, errorMessage });
 })
 
-router.post('/',authenticate,(req,res)=>{
-        const  message = req.body.feedback;
-        const user = req.user._id;
+router.post('/', authenticate, (req, res) => {
+    const message = req.body.feedback;
+    const user = req.user._id;
 
-        console.log("id and message ", message,user);
-        console.log(req.body);
+    const newFeedback = new Feedback({ message, user });
     
-    const newfeedback = new Feedback({ message,user})
-    newfeedback.save();
-    res.redirect("/");
-
+    newFeedback.save()
+      .then(() => {
+          req.flash('success', 'Feedback submitted successfully!');
+          res.redirect('/');
+      })
+      .catch((err) => {
+          console.error(err);
+          req.flash('error', 'Something went wrong. Please try again.');
+          res.redirect('/');
+      });
 });
+
 
 router.delete('/delete/:id',async(req,res)=>{
     try{
@@ -49,7 +55,7 @@ router.delete('/delete/:id',async(req,res)=>{
         // Delete the feedback
         await Feedback.findByIdAndDelete(feedbackId);
         console.log("deleted successfull");
-        res.status(200).redirect('/');
+        res.status(200).redirect('/',{successMessage, errorMessage});
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }

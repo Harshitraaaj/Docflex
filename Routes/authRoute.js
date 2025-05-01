@@ -5,7 +5,9 @@ const { authenticate } = require("../middleware/auth");
 const router = express.Router();
 
 router.get('/signup',(req,res)=>{
-    res.render("signup");
+    const successMessage = req.flash('success');
+    const errorMessage = req.flash('error');
+    res.render("signup",{successMessage, errorMessage});
 })
 
 router.post("/signup", signup);
