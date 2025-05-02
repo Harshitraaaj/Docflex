@@ -49,14 +49,12 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // ✅ Enables JSON body parsing
-app.use(flash());
-app.use(cookieParser()); // ✅ Enables req.cookies
-app.use(methodOverride("_method"));
-app.use(verifyUser);
-// app.use(authenticate);
+app.use(express.json()); 
 
-// **Setup Session**
+app.use(cookieParser()); 
+app.use(methodOverride("_method"));
+
+// setup Session
 app.use(
   session({
       secret: process.env.SESSION_SECRET,
@@ -66,6 +64,8 @@ app.use(
   })
 );
 
+app.use(flash());
+app.use(verifyUser);
 
 
 // //MULTER storage
@@ -85,12 +85,14 @@ app.use(
 
 // ROUTES
 
-app.get("/", async(req, res) => {
+app.get("/",  verifyUser,async(req, res) => {
   try {
     // Fetch latest feedback (max 10)
     const feedbacks = await Feedback.find().sort({ createdAt: -1 }).limit(10).populate("user"); 
 
-    res.render("index.ejs", { feedbacks });
+    console.log(feedbacks);
+
+    res.render("index.ejs", { feedbacks , successMessage: req.flash('success'), errorMessage: req.flash('error') });
 } catch (error) {
     console.error("Error fetching feedbacks:", error);
     res.status(500).send("Internal Server Error");

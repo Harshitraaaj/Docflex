@@ -5,6 +5,7 @@ const User = require("../models/user")
 // Middleware 1: Only checks if user is logged in (No blocking)
 exports.verifyUser = async (req, res, next) => {
     const token = req.cookies.jwt;
+    console.log(token);
 
     if (!token) {
         req.isLoggedIn = false;
@@ -57,6 +58,9 @@ exports.authenticate = async (req, res, next) => {
 
         req.user = user;
         req.token = token;//storing this in req.user so that we can use in different page
+
+        res.locals.LoggedIn = true;
+        res.locals.user = user._id.toString();
         next();
     } catch (err) {
         if (err.name === "TokenExpiredError") {
