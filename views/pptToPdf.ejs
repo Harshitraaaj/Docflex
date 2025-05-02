@@ -18,9 +18,13 @@
 
       <div class="upload-row justify-content-center align-items-start">
         <% if (!downloadLink) { %>
-          <form action="/pptToPdf" method="POST" enctype="multipart/form-data"
+          <form id="conversionForm" action="/pptToPdf" method="POST" enctype="multipart/form-data"
             class="form-control upload text-center mb-3 me-3">
             <input id="uploadb" type="file" name="document" accept=".ppt,.pptx" class="form-control mb-2">
+
+            <div id="loader" style="display: none;" >
+              <span class="loader"></span>
+            </div>
             <button type="submit" class="btn btn-outline-primary mt-2"><b>Convert to PDF</b></button>
           </form>
         <% } else if (downloadLink) { %>

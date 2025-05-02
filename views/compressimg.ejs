@@ -17,9 +17,9 @@
 
       <div class="upload-row justify-content-center align-items-start">
         <% if (!downloadLink) { %>
-          <form action="/compressimg" method="POST" enctype="multipart/form-data" class="form-control upload text-center mb-3 me-3">
+          <form id="conversionForm" action="/compressimg" method="POST" enctype="multipart/form-data" class="form-control upload text-center mb-3 me-3">
             <input id="uploadb" type="file" name="document" accept=".jpg,.jpeg,.heic" class="form-control mb-2">
-            <div class="btn-group my-2" role="group" aria-label="Compression level">
+            <div class="toggle btn-group " role="group" aria-label="Compression level">
               <input type="radio" class="btn-check" name="level" id="btnradio1" value="Low" autocomplete="off">
               <label class="btn btn-outline-primary" for="btnradio1">Low</label>
 
@@ -28,6 +28,10 @@
 
               <input type="radio" class="btn-check" name="level" id="btnradio3" value="High" autocomplete="off">
               <label class="btn btn-outline-primary" for="btnradio3">High</label>
+            </div>
+
+            <div id="loader" style="display: none;" >
+              <span class="loader"></span>
             </div>
             
             <button type="submit" class="btn btn-outline-primary mt-2"><b>Compress IMG</b></button>
