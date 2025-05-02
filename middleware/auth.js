@@ -2,15 +2,14 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user")
 
 
-// Middleware 1: Only checks if user is logged in (No blocking)
+// Middleware 1: checks if user is logged in (No blocking)
 exports.verifyUser = async (req, res, next) => {
     const token = req.cookies.jwt;
-    console.log(token);
 
     if (!token) {
         req.isLoggedIn = false;
         req.user = null;
-        res.locals.LoggedIn = false;  // Make it available in EJS
+        res.locals.LoggedIn = false;  
         res.locals.user = null;
         return next();
     }

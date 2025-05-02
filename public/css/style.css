@@ -140,7 +140,7 @@ form.upload input[type="file"] {
 }
 
 .bottom-text {
-    text-align: start;
+    text-align: center;
     font-size: 0.65rem;
     color: var(--text-color);
     margin: 2rem 0;

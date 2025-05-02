@@ -2,12 +2,16 @@
 
 <div class="content">
   <div class="upload-section">
-    <div class="text-center mt-5">
+    <div class="text-center ">
       <p>Docflex</p>
       <h1><b>PDF Converter</b></h1>
     </div>
-    <div class="text">
-      <div class="text-center my-4">
+    <div class="texte">
+      <div class="icons">
+        <img src="/svg/imgcompress.svg" alt="word">
+        
+      </div>
+      <div class="text-center">
         Drag and drop an image file (JPG, JPEG, HEIC) to compress and convert to PDF.
       </div>
 
@@ -25,13 +29,14 @@
               <input type="radio" class="btn-check" name="level" id="btnradio3" value="High" autocomplete="off">
               <label class="btn btn-outline-primary" for="btnradio3">High</label>
             </div>
-            <button type="submit" class="btn btn-outline-primary mt-2">Select a file</button>
+            
+            <button type="submit" class="btn btn-outline-primary mt-2"><b>Compress IMG</b></button>
           </form>
         <% } else if (downloadLink) { %>
           <div class="downloadBox conversion-message text-center">
             <p>Conversion Successful!<br>Click below to download your PDF file.</p>
             <a href="<%= downloadLink %>" id="downloadBtn" role="button">
-              <button class="btn btn-outline-primary" type="button">Download PDF</button>
+              <button class="btn btn-outline-primary" type="button">Download IMG</button>
             </a>
           </div>
         <% } %>
@@ -39,15 +44,15 @@
     </div>
 
     <div class="bottom-text">
-      <span>Your files will be securely handled by Adobe servers and deleted unless you sign in to save them.
+      <span>Your files will be securely handled by Docflex servers and deleted unless you sign in to save them.
         <i class="fa-solid fa-circle-info"></i><br>
-        By using this service, you agree to the Adobe Terms of Use and Privacy Policy.</span>
+        By using this service, you agree to the Docflex Terms of Use and Privacy Policy.</span>
     </div>
   </div>
 </div>
 <br>
 
-<div class="belowtext"><b>8M* files uploaded!<br>
+<div class="belowtext"><b>8M files uploaded!<br>
   Join millions of users who have successfully converted PDFs using Docflex.</b>
 </div>
 

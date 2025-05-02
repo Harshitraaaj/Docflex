@@ -7,19 +7,15 @@ const convertRoutes = require("./Routes/convertRoutes");
 const authRoute = require("./Routes/authRoute");
 const aboutus = require("./Routes/AboutusRoute");
 const path = require('path');
-const fs = require('fs');
 const feedbackRoute = require('./Routes/feedbackRoute');
-const userSchema = require('./models/user')
 const mongoose = require('mongoose');
 const session = require("express-session");
 const flash = require('connect-flash');
 const cookieParser = require("cookie-parser");
 const Feedback = require("./models/feedback")
-const User = require("./models/user")
 const methodOverride = require("method-override");
 const { verifyUser} = require("./middleware/auth");
 
-const MONGODB_URL =  'mongodb://localhost:27017/user';
 const Atlas_URL = process.env.ATLAS_URL;
 const connectDB = async () => {
   try {
@@ -32,14 +28,7 @@ const connectDB = async () => {
 };
 
 connectDB();
-
-
-
 const PORT = process.env.PORT || 3000;
-
-
-
-
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -68,30 +57,13 @@ app.use(flash());
 app.use(verifyUser);
 
 
-// //MULTER storage
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       return cb(null, './files')
-//     },
-//     filename: function (req, file, cb) {
-      
-//      const filename = `${Date.now()}-${file.originalname}`;
-//       return cb(null, filename)
-//     },
-//   });
-  
-//   const upload = multer({ storage })
-
 
 // ROUTES
 
-app.get("/",  verifyUser,async(req, res) => {
+app.get("/",async(req, res) => {
   try {
     // Fetch latest feedback (max 10)
     const feedbacks = await Feedback.find().sort({ createdAt: -1 }).limit(10).populate("user"); 
-
-    console.log(feedbacks);
-
     res.render("index.ejs", { feedbacks , successMessage: req.flash('success'), errorMessage: req.flash('error') });
 } catch (error) {
     console.error("Error fetching feedbacks:", error);
@@ -99,15 +71,6 @@ app.get("/",  verifyUser,async(req, res) => {
 }
 });
 
-app.get('/env-check', (req, res) => {
-  res.json({
-    cloudName: process.env.CLOUD_NAME,
-    allEnv: process.env
-  });
-});
-
-
-  
  
 app.use('/', convertRoutes);
 app.use('/feedback',feedbackRoute);

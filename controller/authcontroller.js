@@ -45,7 +45,7 @@ exports.signup = async (req, res) => {
         const errorMessage = req.flash('error');
         
 
-        res.render("feedback",{successMessage, errorMessage,  name: user.name});
+        res.render("feedback",{LoggedIn:true ,successMessage, errorMessage,  name: user.name });
     } catch (error) {
         console.error(error);
         req.flash('error', 'Something went wrong during signup.');
