@@ -5,7 +5,8 @@ const Feedback = require('../models/feedback');
 const User = require('../models/user')
 const express = require('express');
 const app = express();
-// **SIGNUP**
+
+// SIGNUP
 exports.signup = async (req, res) => {
     try {
 
@@ -53,7 +54,7 @@ exports.signup = async (req, res) => {
     }
 };
 
-// **LOGIN**
+// LOGIN
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;

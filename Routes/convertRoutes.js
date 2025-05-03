@@ -7,26 +7,11 @@ const path = require("path");
 const fs = require("fs");
 const { convertToFiles } = require("../middleware/converter_node");
 const sharp = require('sharp');
-const { cloud_storage, cloudinary } = require("../cloudConfig");
+const { cloudinary } = require("../cloudConfig");
 const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
 const FILES_FOLDER = path.join(__dirname, "../files");
 
-
-
-// //MULTER storage
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       return cb(null, './files')
-//     },
-//     filename: function (req, file, cb) {
-
-//      const filename = `${Date.now()}-${file.originalname}`;
-//       return cb(null, filename)
-//     },
-//   });
-
-//   const upload = multer({ storage })
 
 // Helper functions
 const sanitizeFilename = (filename) => {

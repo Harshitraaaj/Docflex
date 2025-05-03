@@ -23,7 +23,7 @@ const connectDB = async () => {
     console.log(" MongoDB connected successfully");
   } catch (err) {
     console.error("MongoDB connection error:", err);
-    process.exit(1); // Exit the process on failure
+    process.exit(1); 
   }
 };
 
@@ -48,7 +48,7 @@ app.use(
   session({
       secret: process.env.SESSION_SECRET,
       resave: false,
-      saveUninitialized: true, //temporary set to true at end turn to false
+      saveUninitialized: false, 
       cookie: { secure: false, maxAge: 60 * 60 * 1000 }, // 1 hour session
   })
 );
@@ -81,7 +81,7 @@ app.get('/*',(req,res)=>{
 })
 
 
-//Server Start
+
 app.listen(PORT, () => {
   console.log(` Server running on PORT:${PORT}`);
 });

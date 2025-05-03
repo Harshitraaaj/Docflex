@@ -1,4 +1,3 @@
-# Use an official Node.js image
 FROM node:20.12.2
 
 
@@ -21,5 +20,5 @@ COPY . .
 # Expose your app port
 EXPOSE 3000
 
-# Start your app
+
 CMD ["node", "app.js"]
