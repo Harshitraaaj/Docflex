@@ -27,10 +27,10 @@ Before running the project, ensure you have the following installed:
 
 1. **Clone the repository**:
 
-   ```bash
+ ```bash
    git clone https://github.com/Harshitraaaj/Docflex.git
    cd Docflex
-   ```
+ ```
 2. **Install Node.js dependencies**:
 
  ```bash
@@ -79,7 +79,7 @@ Then access the app at:
 http://localhost:3000
 ```
 
-##Live Demo##
+#Live Demo
 ```bash
 https://docflex.onrender.com
 ```
