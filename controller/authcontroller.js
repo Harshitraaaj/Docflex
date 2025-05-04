@@ -1,10 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const cookie = require('cookie-parser');
-const Feedback = require('../models/feedback');
 const User = require('../models/user')
-const express = require('express');
-const app = express();
+
+
 
 // SIGNUP
 exports.signup = async (req, res) => {
@@ -120,13 +118,9 @@ exports.logout = async (req, res) => {
 
         console.log("logout successfull");
 
-        const feedbacks = await Feedback.find().sort({ createdAt: -1 }).limit(10).populate("user"); 
-
         // Set flash message before redirect
         req.flash('success', 'You have been logged out successfully.');
-
-        
-        res.render("index.ejs", { feedbacks, successMessage: req.flash('success'), errorMessage: req.flash('error') });
+        res.redirect('/');
     } catch (err) {
         req.flash('error', 'Server error. Try again.');
         res.status(500).send(err);

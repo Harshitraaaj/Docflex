@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticate } = require("../middleware/auth");
 const Feedback = require("../models/feedback");
-const user =require("../models/user")
-const mongoose=require("mongoose");
+
 
 
 
@@ -34,33 +33,36 @@ router.post('/', authenticate, (req, res) => {
 });
 
 
-router.delete('/delete/:id',async(req,res)=>{
-    try{
-        
-    const feedbackId = req.params.id;
-    const userId = req.user;
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const feedbackId = req.params.id;
+        const userId = req.user;
 
         // Find the feedback by ID
         const feedback = await Feedback.findById(feedbackId);
-        console.log(feedback);
         if (!feedback) {
             return res.status(404).json({ error: "Feedback not found" });
         }
 
-        // Check if the logged-in user is the owner of the feedback
+        // Check ownership
         if (feedback.user.toString() !== userId._id.toString()) {
             return res.status(403).json({ error: "Unauthorized! You can only delete your own feedback." });
         }
-        
+
         // Delete the feedback
         await Feedback.findByIdAndDelete(feedbackId);
-        console.log("deleted successfull");
-        res.status(200).redirect('/',{successMessage, errorMessage});
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
-    }
 
+        // Flash success and redirect
+        req.flash('success', 'Feedback deleted successfully!');
+        res.redirect('/');
+        
+    } catch (error) {
+        console.error("Error deleting feedback:", error);
+        req.flash('error', 'Something went wrong. Please try again.');
+        res.redirect('/');
+    }
 });
+
 
 
 module.exports = router;

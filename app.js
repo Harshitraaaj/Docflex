@@ -67,7 +67,7 @@ app.get("/",async(req, res) => {
     res.render("index.ejs", { feedbacks , successMessage: req.flash('success'), errorMessage: req.flash('error') });
 } catch (error) {
     console.error("Error fetching feedbacks:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).redirect("/"); 
 }
 });
 
