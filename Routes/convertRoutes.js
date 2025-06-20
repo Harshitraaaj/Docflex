@@ -12,7 +12,6 @@ const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
 const FILES_FOLDER = path.join(__dirname, "../files");
 
-
 // Helper functions
 const sanitizeFilename = (filename) => {
     return filename.replace(/[^a-zA-Z0-9_.-]/g, '_');
@@ -28,10 +27,10 @@ const validatePdf = (filePath) => {
 };
 
 //Route: Convert Word to PDF
-
 router.get("/wordToPdf", (req, res) => {
     res.render('wordToPdf', { downloadLink: null });
 });
+
 // Route: Convert Word to PDF 
 router.post("/wordToPdf", upload.single("document"), async (req, res) => {
     let convertedFilePath;
@@ -105,12 +104,11 @@ router.post("/wordToPdf", upload.single("document"), async (req, res) => {
     }
 });
 
-
 //Route: Convert Csv to PDF
-
 router.get("/csvToPdf", (req, res) => {
     res.render('csvToPdf', { downloadLink: null });
 });
+
 // Route: Convert Csv to PDF **
 router.post("/csvToPdf", upload.single("document"), async (req, res) => {
     let tempInputPath, convertedFilePath;
@@ -165,13 +163,11 @@ router.post("/csvToPdf", upload.single("document"), async (req, res) => {
     }
 });
 
-
-
 //Route: Convert PPt to PDF
-
 router.get("/pptToPdf", (req, res) => {
     res.render('pptToPdf', { downloadLink: null });
 });
+
 // Route: Convert PPT to PDF **
 router.post("/pptToPdf", upload.single("document"), async (req, res) => {
     let tempInputPath, convertedFilePath;
@@ -226,9 +222,7 @@ router.post("/pptToPdf", upload.single("document"), async (req, res) => {
     }
 });
 
-
 //imagecompress
-
 router.get("/compressimg", (req, res) => {
     res.render('compressimg', { downloadLink: null });
 });
@@ -254,31 +248,27 @@ router.post("/compressimg", upload.single("document"), async (req, res) => {
         .toBuffer();
   
       // Upload compressed image to Cloudinary
-      const uploaded = await cloudinary.uploader.upload_stream(
-        {
-          folder: "compressedImages",
-          resource_type: "image",
-          public_id: `${timestamp}-${baseName}`,
-          access_mode: "public"
-        },
-        (error, result) => {
-          if (error) {
-            console.error("Cloudinary Upload Error:", error);
-            return res.status(500).render("compressimg", {
-              downloadLink: null,
-              error: "Failed to upload compressed image"
-            });
+      const uploaded = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "compressedImages",
+            resource_type: "image",
+            public_id: `${timestamp}-${baseName}`,
+            access_mode: "public"
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
           }
+        );
+        
+        streamifier.createReadStream(compressedBuffer).pipe(uploadStream);
+      });
   
-          res.render("compressimg", {
-            downloadLink: result.secure_url,
-            error: null
-          });
-        }
-      );
-  
-      // Pipe the compressed buffer to the upload stream
-      streamifier.createReadStream(compressedBuffer).pipe(uploaded);
+      res.render("compressimg", {
+        downloadLink: uploaded.secure_url,
+        error: null
+      });
   
     } catch (err) {
       console.error("Image Compression Error:", err);
@@ -287,14 +277,14 @@ router.post("/compressimg", upload.single("document"), async (req, res) => {
         error: err.message
       });
     }
-  });
-  
+});
 
 //pdftoword
 router.get("/pdfToWord", (req, res) => {
     res.render("pdfToWord", { downloadLink: null });
 });
-//route pdftoword
+
+// Fixed PDF to Word route with enhanced error handling
 router.post("/pdfToWord", upload.single("document"), async (req, res) => {
     let tempInputPath, convertedFilePath;
 
@@ -310,24 +300,74 @@ router.post("/pdfToWord", upload.single("document"), async (req, res) => {
         const timestamp = Date.now();
         const outputFileName = `${timestamp}-${baseName}.docx`;
 
+        // Create files folder if it doesn't exist
+        if (!fs.existsSync(FILES_FOLDER)) {
+            fs.mkdirSync(FILES_FOLDER, { recursive: true });
+        }
+
         tempInputPath = path.join(FILES_FOLDER, `temp_${timestamp}.pdf`);
         convertedFilePath = path.join(FILES_FOLDER, outputFileName);
 
+        // Write input file
         fs.writeFileSync(tempInputPath, req.file.buffer);
 
+        // Verify Python script exists
         const pythonScriptPath = path.join(__dirname, "../pdfToWord.py");
+        if (!fs.existsSync(pythonScriptPath)) {
+            throw new Error("Conversion service unavailable - missing script");
+        }
+
+        // Execute Python conversion
         const pythonProcess = spawn("python3", [pythonScriptPath, tempInputPath, convertedFilePath]);
 
-        await new Promise((resolve, reject) => {
-            pythonProcess.on("close", (code) => {
-                if (code === 0) resolve();
-                else reject(new Error("Python conversion script failed"));
+        // Capture output for debugging
+        let stdout = '';
+        let stderr = '';
+
+        pythonProcess.stdout.on('data', (data) => {
+            stdout += data.toString();
+        });
+
+        pythonProcess.stderr.on('data', (data) => {
+            stderr += data.toString();
+        });
+
+        // Handle process completion with timeout
+        const exitCode = await new Promise((resolve, reject) => {
+            const timeout = 300000; // 5 minutes timeout
+            const timeoutId = setTimeout(() => {
+                pythonProcess.kill('SIGKILL');
+                reject(new Error('Conversion timed out after 5 minutes'));
+            }, timeout);
+
+            pythonProcess.on('close', (code) => {
+                clearTimeout(timeoutId);
+                resolve(code);
+            });
+
+            pythonProcess.on('error', (err) => {
+                clearTimeout(timeoutId);
+                reject(err);
             });
         });
 
-        const fileStats = fs.statSync(convertedFilePath);
-        if (fileStats.size < 1024) throw new Error("Converted file too small");
+        // Check conversion result
+        if (exitCode !== 0) {
+            console.error(`Python conversion failed (${exitCode}): ${stderr}`);
+            throw new Error(`Conversion failed: ${stderr || 'Unknown error'}`);
+        }
 
+        // Verify output file
+        if (!fs.existsSync(convertedFilePath)) {
+            throw new Error("Conversion produced no output file");
+        }
+
+        const fileStats = fs.statSync(convertedFilePath);
+        if (fileStats.size < 1024) {
+            throw new Error("Converted file is too small (likely conversion error)");
+        }
+
+        // Upload to Cloudinary
         const convertedUpload = await cloudinary.uploader.upload(convertedFilePath, {
             folder: "convertedFiles",
             resource_type: "raw",
@@ -346,18 +386,21 @@ router.post("/pdfToWord", upload.single("document"), async (req, res) => {
         console.error("PDF to Word Conversion Error:", error);
         res.status(500).render("pdfToWord", {
             downloadLink: null,
-            error: error.message
+            error: error.message || "Conversion failed. Please try a different file."
         });
     } finally {
+        // Cleanup files with error handling
         [tempInputPath, convertedFilePath].forEach(filePath => {
-            if (filePath && fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
+            try {
+                if (filePath && fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+            } catch (cleanupErr) {
+                console.error("Cleanup error:", cleanupErr);
             }
         });
     }
 });
-
-
 
 // Export the router
 module.exports = router;
