@@ -20,69 +20,51 @@
 #!/usr/bin/env python3
 import sys
 import os
-from pdf2docx import Converter
 
-def convert_pdf_to_word(input_path, output_path):
+# Try multiple conversion methods
+try:
+    from pdf2docx import Converter
+    CONVERSION_METHOD = "pdf2docx"
+except ImportError:
+    try:
+        import fitz  # PyMuPDF
+        from docx import Document
+        from docx.shared import Inches
+        from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+        CONVERSION_METHOD = "pymupdf"
+    except ImportError:
+        print("Error: Required packages not found. Please install pdf2docx or pymupdf+python-docx", file=sys.stderr)
+        sys.exit(1)
+
+def convert_pdf_to_word_pymupdf(input_path, output_path):
     """
-    Convert PDF to Word document using pdf2docx
+    Convert PDF to Word using PyMuPDF + python-docx (fallback method)
     """
     try:
-        # Check if input file exists
-        if not os.path.exists(input_path):
-            raise FileNotFoundError(f"Input file not found: {input_path}")
+        # Open PDF
+        doc = fitz.open(input_path)
+        word_doc = Document()
         
-        # Check if input file is not empty
-        if os.path.getsize(input_path) == 0:
-            raise ValueError("Input PDF file is empty")
+        # Extract text from each page
+        for page_num in range(len(doc)):
+            page = doc[page_num]
+            text = page.get_text()
+            
+            if text.strip():  # Only add non-empty pages
+                if page_num > 0:
+                    word_doc.add_page_break()
+                
+                # Split text into paragraphs
+                paragraphs = text.split('\n\n')
+                for para_text in paragraphs:
+                    if para_text.strip():
+                        word_doc.add_paragraph(para_text.strip())
         
-        # Create output directory if it doesn't exist
-        output_dir = os.path.dirname(output_path)
-        if output_dir and not os.path.exists(output_dir):
-            os.makedirs(output_dir, exist_ok=True)
+        # Save document
+        word_doc.save(output_path)
+        doc.close()
         
-        # Convert PDF to Word
-        cv = Converter(input_path)
-        cv.convert(output_path)
-        cv.close()
-        
-        # Verify output file was created and is not empty
-        if not os.path.exists(output_path):
-            raise RuntimeError("Conversion failed: Output file was not created")
-        
-        if os.path.getsize(output_path) == 0:
-            raise RuntimeError("Conversion failed: Output file is empty")
-        
-        print(f"Successfully converted {input_path} to {output_path}")
         return True
-        
     except Exception as e:
-        print(f"Error during conversion: {str(e)}", file=sys.stderr)
-        # Clean up partial output file if it exists
-        if os.path.exists(output_path):
-            try:
-                os.remove(output_path)
-            except:
-                pass
+        print(f"PyMuPDF conversion error: {str(e)}", file=sys.stderr)
         return False
-
-def main():
-    if len(sys.argv) != 3:
-        print("Usage: python3 pdfToWord.py <input_pdf_path> <output_docx_path>", file=sys.stderr)
-        sys.exit(1)
-    
-    input_path = sys.argv[1]
-    output_path = sys.argv[2]
-    
-    # Ensure output has .docx extension
-    if not output_path.lower().endswith('.docx'):
-        output_path += '.docx'
-    
-    success = convert_pdf_to_word(input_path, output_path)
-    
-    if success:
-        sys.exit(0)
-    else:
-        sys.exit(1)
-
-if __name__ == "__main__":
-    main()
